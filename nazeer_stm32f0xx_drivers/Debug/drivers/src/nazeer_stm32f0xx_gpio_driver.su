@@ -1,0 +1,10 @@
+../drivers/src/nazeer_stm32f0xx_gpio_driver.c:9:6:NAZEER_GPIO_Init	16	static
+../drivers/src/nazeer_stm32f0xx_gpio_driver.c:17:6:NAZEER_GPIO_DeInit	16	static
+../drivers/src/nazeer_stm32f0xx_gpio_driver.c:21:6:NAZEER_GPIO_ReadPin	16	static
+../drivers/src/nazeer_stm32f0xx_gpio_driver.c:24:10:NAZEER_GPIO_ReadPort	16	static
+../drivers/src/nazeer_stm32f0xx_gpio_driver.c:27:6:NAZEER_GPIO_WritePin	16	static
+../drivers/src/nazeer_stm32f0xx_gpio_driver.c:30:6:NAZEER_GPIO_WritePort	16	static
+../drivers/src/nazeer_stm32f0xx_gpio_driver.c:33:6:NAZEER_GPIO_TogglePin	16	static
+../drivers/src/nazeer_stm32f0xx_gpio_driver.c:37:6:NAZEER_GPIO_IRQConfig	24	static
+../drivers/src/nazeer_stm32f0xx_gpio_driver.c:40:6:NAZEER_GPIO_IRQHandler	8	static
+../drivers/src/nazeer_stm32f0xx_gpio_driver.c:44:6:NAZEER_GPIO_PCLKControl	16	static
