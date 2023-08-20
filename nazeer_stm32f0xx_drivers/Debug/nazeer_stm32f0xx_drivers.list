@@ -5,47 +5,47 @@ Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
   0 .isr_vector   000000c0  08000000  08000000  00010000  2**0
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  1 .text         00000104  080000c0  080000c0  000100c0  2**2
+  1 .text         000003f0  080000c0  080000c0  000100c0  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .rodata       00000000  080001c4  080001cc  000101cc  2**0
+  2 .rodata       00000000  080004b0  080004b8  000104b8  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  3 .ARM.extab    00000000  080001c4  080001c4  000101cc  2**0
+  3 .ARM.extab    00000000  080004b0  080004b0  000104b8  2**0
                   CONTENTS
-  4 .ARM          00000000  080001c4  080001c4  000101cc  2**0
+  4 .ARM          00000000  080004b0  080004b0  000104b8  2**0
                   CONTENTS
-  5 .preinit_array 00000000  080001c4  080001cc  000101cc  2**0
+  5 .preinit_array 00000000  080004b0  080004b8  000104b8  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  6 .init_array   00000004  080001c4  080001c4  000101c4  2**2
+  6 .init_array   00000004  080004b0  080004b0  000104b0  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  7 .fini_array   00000004  080001c8  080001c8  000101c8  2**2
+  7 .fini_array   00000004  080004b4  080004b4  000104b4  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  8 .data         00000000  20000000  20000000  000101cc  2**0
+  8 .data         00000000  20000000  20000000  000104b8  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  9 .bss          0000001c  20000000  080001cc  00020000  2**2
+  9 .bss          0000001c  20000000  080004b8  00020000  2**2
                   ALLOC
- 10 ._user_heap_stack 00000604  2000001c  080001cc  0002001c  2**0
+ 10 ._user_heap_stack 00000604  2000001c  080004b8  0002001c  2**0
                   ALLOC
- 11 .ARM.attributes 00000028  00000000  00000000  000101cc  2**0
+ 11 .ARM.attributes 00000028  00000000  00000000  000104b8  2**0
                   CONTENTS, READONLY
- 12 .comment      00000043  00000000  00000000  000101f4  2**0
+ 12 .comment      00000043  00000000  00000000  000104e0  2**0
                   CONTENTS, READONLY
- 13 .debug_info   000000aa  00000000  00000000  00010237  2**0
+ 13 .debug_info   00000713  00000000  00000000  00010523  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_abbrev 00000059  00000000  00000000  000102e1  2**0
+ 14 .debug_abbrev 00000206  00000000  00000000  00010c36  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_aranges 00000048  00000000  00000000  00010340  2**3
+ 15 .debug_aranges 000000b8  00000000  00000000  00010e40  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_rnglists 0000002c  00000000  00000000  00010388  2**0
+ 16 .debug_rnglists 0000007e  00000000  00000000  00010ef8  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_macro  00001055  00000000  00000000  000103b4  2**0
+ 17 .debug_macro  000012c3  00000000  00000000  00010f76  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_line   0000042b  00000000  00000000  00011409  2**0
+ 18 .debug_line   00000ae6  00000000  00000000  00012239  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_str    00004385  00000000  00000000  00011834  2**0
+ 19 .debug_str    00004add  00000000  00000000  00012d1f  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 20 .debug_frame  00000058  00000000  00000000  00015bbc  2**2
+ 20 .debug_frame  000001c8  00000000  00000000  000177fc  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 21 .debug_line_str 00000074  00000000  00000000  00015c14  2**0
+ 21 .debug_line_str 00000074  00000000  00000000  000179c4  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -67,7 +67,7 @@ Disassembly of section .text:
  80000da:	bd10      	pop	{r4, pc}
  80000dc:	20000000 	.word	0x20000000
  80000e0:	00000000 	.word	0x00000000
- 80000e4:	080001ac 	.word	0x080001ac
+ 80000e4:	08000498 	.word	0x08000498
 
 080000e8 <frame_dummy>:
  80000e8:	4b04      	ldr	r3, [pc, #16]	; (80000fc <frame_dummy+0x14>)
@@ -82,175 +82,642 @@ Disassembly of section .text:
  80000fa:	46c0      	nop			; (mov r8, r8)
  80000fc:	00000000 	.word	0x00000000
  8000100:	20000004 	.word	0x20000004
- 8000104:	080001ac 	.word	0x080001ac
+ 8000104:	08000498 	.word	0x08000498
 
-08000108 <main>:
+08000108 <delay>:
 
 #include <stdint.h>
 #include "stm32f0xx.h"
+#include "nazeer_stm32f0xx_gpio_driver.h"
 
+void delay(){
+ 8000108:	b580      	push	{r7, lr}
+ 800010a:	b082      	sub	sp, #8
+ 800010c:	af00      	add	r7, sp, #0
+	for(uint32_t i = 0; i < 500000; i++);
+ 800010e:	2300      	movs	r3, #0
+ 8000110:	607b      	str	r3, [r7, #4]
+ 8000112:	e002      	b.n	800011a <delay+0x12>
+ 8000114:	687b      	ldr	r3, [r7, #4]
+ 8000116:	3301      	adds	r3, #1
+ 8000118:	607b      	str	r3, [r7, #4]
+ 800011a:	687b      	ldr	r3, [r7, #4]
+ 800011c:	4a03      	ldr	r2, [pc, #12]	; (800012c <delay+0x24>)
+ 800011e:	4293      	cmp	r3, r2
+ 8000120:	d9f8      	bls.n	8000114 <delay+0xc>
+}
+ 8000122:	46c0      	nop			; (mov r8, r8)
+ 8000124:	46c0      	nop			; (mov r8, r8)
+ 8000126:	46bd      	mov	sp, r7
+ 8000128:	b002      	add	sp, #8
+ 800012a:	bd80      	pop	{r7, pc}
+ 800012c:	0007a11f 	.word	0x0007a11f
+
+08000130 <main>:
 int main(void)
 {
- 8000108:	b580      	push	{r7, lr}
- 800010a:	af00      	add	r7, sp, #0
-    /* Loop forever */
-	for(;;);
- 800010c:	e7fe      	b.n	800010c <main+0x4>
-	...
+ 8000130:	b580      	push	{r7, lr}
+ 8000132:	b084      	sub	sp, #16
+ 8000134:	af00      	add	r7, sp, #0
+	NAZEER_GPIO_Handle_t gpioLEDHandle;
+	gpioLEDHandle.pGPIOx = NAZEER_GPIOC;
+ 8000136:	1d3b      	adds	r3, r7, #4
+ 8000138:	4a10      	ldr	r2, [pc, #64]	; (800017c <main+0x4c>)
+ 800013a:	601a      	str	r2, [r3, #0]
+	gpioLEDHandle.GPIO_PinConfig.pinNumber = 9;
+ 800013c:	1d3b      	adds	r3, r7, #4
+ 800013e:	2209      	movs	r2, #9
+ 8000140:	711a      	strb	r2, [r3, #4]
+	gpioLEDHandle.GPIO_PinConfig.pinMode = NAZEER_GPIO_MODE_OUT;
+ 8000142:	1d3b      	adds	r3, r7, #4
+ 8000144:	2201      	movs	r2, #1
+ 8000146:	715a      	strb	r2, [r3, #5]
+	gpioLEDHandle.GPIO_PinConfig.pinOType = NAZEER_GPIO_OTYPE_PP;
+ 8000148:	1d3b      	adds	r3, r7, #4
+ 800014a:	2200      	movs	r2, #0
+ 800014c:	721a      	strb	r2, [r3, #8]
+	gpioLEDHandle.GPIO_PinConfig.pinPuPdControl = NAZEER_GPIO_PUPD_NO;
+ 800014e:	1d3b      	adds	r3, r7, #4
+ 8000150:	2200      	movs	r2, #0
+ 8000152:	71da      	strb	r2, [r3, #7]
+	gpioLEDHandle.GPIO_PinConfig.pinSpeed = NAZEER_GPIO_OSPEED_HIGH;
+ 8000154:	1d3b      	adds	r3, r7, #4
+ 8000156:	2211      	movs	r2, #17
+ 8000158:	719a      	strb	r2, [r3, #6]
 
-08000110 <Reset_Handler>:
+	NAZEER_GPIO_PCLKControl(NAZEER_GPIOC, ENABLE);
+ 800015a:	4b08      	ldr	r3, [pc, #32]	; (800017c <main+0x4c>)
+ 800015c:	2101      	movs	r1, #1
+ 800015e:	0018      	movs	r0, r3
+ 8000160:	f000 f8c0 	bl	80002e4 <NAZEER_GPIO_PCLKControl>
+	//always enable the clock before peripheral init to enable the register circuitry of periph
+	NAZEER_GPIO_Init(&gpioLEDHandle);
+ 8000164:	1d3b      	adds	r3, r7, #4
+ 8000166:	0018      	movs	r0, r3
+ 8000168:	f000 f833 	bl	80001d2 <NAZEER_GPIO_Init>
+
+    /* Loop forever */
+	for(;;){
+		NAZEER_GPIO_TogglePin(NAZEER_GPIOC, 9);
+ 800016c:	4b03      	ldr	r3, [pc, #12]	; (800017c <main+0x4c>)
+ 800016e:	2109      	movs	r1, #9
+ 8000170:	0018      	movs	r0, r3
+ 8000172:	f000 f8a2 	bl	80002ba <NAZEER_GPIO_TogglePin>
+		delay();
+ 8000176:	f7ff ffc7 	bl	8000108 <delay>
+		NAZEER_GPIO_TogglePin(NAZEER_GPIOC, 9);
+ 800017a:	e7f7      	b.n	800016c <main+0x3c>
+ 800017c:	48000800 	.word	0x48000800
+
+08000180 <Reset_Handler>:
 
   .section .text.Reset_Handler
   .weak Reset_Handler
   .type Reset_Handler, %function
 Reset_Handler:
   ldr   r0, =_estack
- 8000110:	480d      	ldr	r0, [pc, #52]	; (8000148 <LoopForever+0x2>)
+ 8000180:	480d      	ldr	r0, [pc, #52]	; (80001b8 <LoopForever+0x2>)
   mov   sp, r0          /* set stack pointer */
- 8000112:	4685      	mov	sp, r0
+ 8000182:	4685      	mov	sp, r0
 /* Call the clock system initialization function.*/
   bl  SystemInit
- 8000114:	e000      	b.n	8000118 <Reset_Handler+0x8>
- 8000116:	bf00      	nop
+ 8000184:	e000      	b.n	8000188 <Reset_Handler+0x8>
+ 8000186:	bf00      	nop
 
 /* Copy the data segment initializers from flash to SRAM */
   ldr r0, =_sdata
- 8000118:	480c      	ldr	r0, [pc, #48]	; (800014c <LoopForever+0x6>)
+ 8000188:	480c      	ldr	r0, [pc, #48]	; (80001bc <LoopForever+0x6>)
   ldr r1, =_edata
- 800011a:	490d      	ldr	r1, [pc, #52]	; (8000150 <LoopForever+0xa>)
+ 800018a:	490d      	ldr	r1, [pc, #52]	; (80001c0 <LoopForever+0xa>)
   ldr r2, =_sidata
- 800011c:	4a0d      	ldr	r2, [pc, #52]	; (8000154 <LoopForever+0xe>)
+ 800018c:	4a0d      	ldr	r2, [pc, #52]	; (80001c4 <LoopForever+0xe>)
   movs r3, #0
- 800011e:	2300      	movs	r3, #0
+ 800018e:	2300      	movs	r3, #0
   b LoopCopyDataInit
- 8000120:	e002      	b.n	8000128 <LoopCopyDataInit>
+ 8000190:	e002      	b.n	8000198 <LoopCopyDataInit>
 
-08000122 <CopyDataInit>:
+08000192 <CopyDataInit>:
 
 CopyDataInit:
   ldr r4, [r2, r3]
- 8000122:	58d4      	ldr	r4, [r2, r3]
+ 8000192:	58d4      	ldr	r4, [r2, r3]
   str r4, [r0, r3]
- 8000124:	50c4      	str	r4, [r0, r3]
+ 8000194:	50c4      	str	r4, [r0, r3]
   adds r3, r3, #4
- 8000126:	3304      	adds	r3, #4
+ 8000196:	3304      	adds	r3, #4
 
-08000128 <LoopCopyDataInit>:
+08000198 <LoopCopyDataInit>:
 
 LoopCopyDataInit:
   adds r4, r0, r3
- 8000128:	18c4      	adds	r4, r0, r3
+ 8000198:	18c4      	adds	r4, r0, r3
   cmp r4, r1
- 800012a:	428c      	cmp	r4, r1
+ 800019a:	428c      	cmp	r4, r1
   bcc CopyDataInit
- 800012c:	d3f9      	bcc.n	8000122 <CopyDataInit>
+ 800019c:	d3f9      	bcc.n	8000192 <CopyDataInit>
 
 /* Zero fill the bss segment. */
   ldr r2, =_sbss
- 800012e:	4a0a      	ldr	r2, [pc, #40]	; (8000158 <LoopForever+0x12>)
+ 800019e:	4a0a      	ldr	r2, [pc, #40]	; (80001c8 <LoopForever+0x12>)
   ldr r4, =_ebss
- 8000130:	4c0a      	ldr	r4, [pc, #40]	; (800015c <LoopForever+0x16>)
+ 80001a0:	4c0a      	ldr	r4, [pc, #40]	; (80001cc <LoopForever+0x16>)
   movs r3, #0
- 8000132:	2300      	movs	r3, #0
+ 80001a2:	2300      	movs	r3, #0
   b LoopFillZerobss
- 8000134:	e001      	b.n	800013a <LoopFillZerobss>
+ 80001a4:	e001      	b.n	80001aa <LoopFillZerobss>
 
-08000136 <FillZerobss>:
+080001a6 <FillZerobss>:
 
 FillZerobss:
   str  r3, [r2]
- 8000136:	6013      	str	r3, [r2, #0]
+ 80001a6:	6013      	str	r3, [r2, #0]
   adds r2, r2, #4
- 8000138:	3204      	adds	r2, #4
+ 80001a8:	3204      	adds	r2, #4
 
-0800013a <LoopFillZerobss>:
+080001aa <LoopFillZerobss>:
 
 LoopFillZerobss:
   cmp r2, r4
- 800013a:	42a2      	cmp	r2, r4
+ 80001aa:	42a2      	cmp	r2, r4
   bcc FillZerobss
- 800013c:	d3fb      	bcc.n	8000136 <FillZerobss>
+ 80001ac:	d3fb      	bcc.n	80001a6 <FillZerobss>
 
 /* Call static constructors */
   bl __libc_init_array
- 800013e:	f000 f811 	bl	8000164 <__libc_init_array>
+ 80001ae:	f000 f94f 	bl	8000450 <__libc_init_array>
 /* Call the application's entry point.*/
   bl main
- 8000142:	f7ff ffe1 	bl	8000108 <main>
+ 80001b2:	f7ff ffbd 	bl	8000130 <main>
 
-08000146 <LoopForever>:
+080001b6 <LoopForever>:
 
 LoopForever:
   b LoopForever
- 8000146:	e7fe      	b.n	8000146 <LoopForever>
+ 80001b6:	e7fe      	b.n	80001b6 <LoopForever>
   ldr   r0, =_estack
- 8000148:	20002000 	.word	0x20002000
+ 80001b8:	20002000 	.word	0x20002000
   ldr r0, =_sdata
- 800014c:	20000000 	.word	0x20000000
+ 80001bc:	20000000 	.word	0x20000000
   ldr r1, =_edata
- 8000150:	20000000 	.word	0x20000000
+ 80001c0:	20000000 	.word	0x20000000
   ldr r2, =_sidata
- 8000154:	080001cc 	.word	0x080001cc
+ 80001c4:	080004b8 	.word	0x080004b8
   ldr r2, =_sbss
- 8000158:	20000000 	.word	0x20000000
+ 80001c8:	20000000 	.word	0x20000000
   ldr r4, =_ebss
- 800015c:	2000001c 	.word	0x2000001c
+ 80001cc:	2000001c 	.word	0x2000001c
 
-08000160 <ADC_COMP_IRQHandler>:
+080001d0 <ADC_COMP_IRQHandler>:
  * @retval : None
 */
   .section .text.Default_Handler,"ax",%progbits
 Default_Handler:
 Infinite_Loop:
   b Infinite_Loop
- 8000160:	e7fe      	b.n	8000160 <ADC_COMP_IRQHandler>
-	...
+ 80001d0:	e7fe      	b.n	80001d0 <ADC_COMP_IRQHandler>
 
-08000164 <__libc_init_array>:
- 8000164:	b570      	push	{r4, r5, r6, lr}
- 8000166:	2600      	movs	r6, #0
- 8000168:	4c0c      	ldr	r4, [pc, #48]	; (800019c <__libc_init_array+0x38>)
- 800016a:	4d0d      	ldr	r5, [pc, #52]	; (80001a0 <__libc_init_array+0x3c>)
- 800016c:	1b64      	subs	r4, r4, r5
- 800016e:	10a4      	asrs	r4, r4, #2
- 8000170:	42a6      	cmp	r6, r4
- 8000172:	d109      	bne.n	8000188 <__libc_init_array+0x24>
- 8000174:	2600      	movs	r6, #0
- 8000176:	f000 f819 	bl	80001ac <_init>
- 800017a:	4c0a      	ldr	r4, [pc, #40]	; (80001a4 <__libc_init_array+0x40>)
- 800017c:	4d0a      	ldr	r5, [pc, #40]	; (80001a8 <__libc_init_array+0x44>)
- 800017e:	1b64      	subs	r4, r4, r5
- 8000180:	10a4      	asrs	r4, r4, #2
- 8000182:	42a6      	cmp	r6, r4
- 8000184:	d105      	bne.n	8000192 <__libc_init_array+0x2e>
- 8000186:	bd70      	pop	{r4, r5, r6, pc}
- 8000188:	00b3      	lsls	r3, r6, #2
- 800018a:	58eb      	ldr	r3, [r5, r3]
- 800018c:	4798      	blx	r3
- 800018e:	3601      	adds	r6, #1
- 8000190:	e7ee      	b.n	8000170 <__libc_init_array+0xc>
- 8000192:	00b3      	lsls	r3, r6, #2
- 8000194:	58eb      	ldr	r3, [r5, r3]
- 8000196:	4798      	blx	r3
- 8000198:	3601      	adds	r6, #1
- 800019a:	e7f2      	b.n	8000182 <__libc_init_array+0x1e>
- 800019c:	080001c4 	.word	0x080001c4
- 80001a0:	080001c4 	.word	0x080001c4
- 80001a4:	080001c8 	.word	0x080001c8
- 80001a8:	080001c4 	.word	0x080001c4
+080001d2 <NAZEER_GPIO_Init>:
+ *  Created on: Aug 19, 2023
+ *      Author: masifamu
+ */
+#include "nazeer_stm32f0xx_gpio_driver.h"
 
-080001ac <_init>:
- 80001ac:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
- 80001ae:	46c0      	nop			; (mov r8, r8)
- 80001b0:	bcf8      	pop	{r3, r4, r5, r6, r7}
- 80001b2:	bc08      	pop	{r3}
- 80001b4:	469e      	mov	lr, r3
- 80001b6:	4770      	bx	lr
+void NAZEER_GPIO_Init(NAZEER_GPIO_Handle_t *pGPIOHandle){
+ 80001d2:	b580      	push	{r7, lr}
+ 80001d4:	b082      	sub	sp, #8
+ 80001d6:	af00      	add	r7, sp, #0
+ 80001d8:	6078      	str	r0, [r7, #4]
+	// mode
+	pGPIOHandle->pGPIOx->MODER |= (pGPIOHandle->GPIO_PinConfig.pinMode << (2 * pGPIOHandle->GPIO_PinConfig.pinNumber));
+ 80001da:	687b      	ldr	r3, [r7, #4]
+ 80001dc:	681b      	ldr	r3, [r3, #0]
+ 80001de:	681a      	ldr	r2, [r3, #0]
+ 80001e0:	687b      	ldr	r3, [r7, #4]
+ 80001e2:	795b      	ldrb	r3, [r3, #5]
+ 80001e4:	0019      	movs	r1, r3
+ 80001e6:	687b      	ldr	r3, [r7, #4]
+ 80001e8:	791b      	ldrb	r3, [r3, #4]
+ 80001ea:	005b      	lsls	r3, r3, #1
+ 80001ec:	4099      	lsls	r1, r3
+ 80001ee:	000b      	movs	r3, r1
+ 80001f0:	0019      	movs	r1, r3
+ 80001f2:	687b      	ldr	r3, [r7, #4]
+ 80001f4:	681b      	ldr	r3, [r3, #0]
+ 80001f6:	430a      	orrs	r2, r1
+ 80001f8:	601a      	str	r2, [r3, #0]
+	// ospeed
+	pGPIOHandle->pGPIOx->OSPEEDR |= (pGPIOHandle->GPIO_PinConfig.pinSpeed << (2 * pGPIOHandle->GPIO_PinConfig.pinNumber));
+ 80001fa:	687b      	ldr	r3, [r7, #4]
+ 80001fc:	681b      	ldr	r3, [r3, #0]
+ 80001fe:	689a      	ldr	r2, [r3, #8]
+ 8000200:	687b      	ldr	r3, [r7, #4]
+ 8000202:	799b      	ldrb	r3, [r3, #6]
+ 8000204:	0019      	movs	r1, r3
+ 8000206:	687b      	ldr	r3, [r7, #4]
+ 8000208:	791b      	ldrb	r3, [r3, #4]
+ 800020a:	005b      	lsls	r3, r3, #1
+ 800020c:	4099      	lsls	r1, r3
+ 800020e:	000b      	movs	r3, r1
+ 8000210:	0019      	movs	r1, r3
+ 8000212:	687b      	ldr	r3, [r7, #4]
+ 8000214:	681b      	ldr	r3, [r3, #0]
+ 8000216:	430a      	orrs	r2, r1
+ 8000218:	609a      	str	r2, [r3, #8]
+	// pupd
+	pGPIOHandle->pGPIOx->PUPDR |= (pGPIOHandle->GPIO_PinConfig.pinPuPdControl << (2 * pGPIOHandle->GPIO_PinConfig.pinNumber));
+ 800021a:	687b      	ldr	r3, [r7, #4]
+ 800021c:	681b      	ldr	r3, [r3, #0]
+ 800021e:	68da      	ldr	r2, [r3, #12]
+ 8000220:	687b      	ldr	r3, [r7, #4]
+ 8000222:	79db      	ldrb	r3, [r3, #7]
+ 8000224:	0019      	movs	r1, r3
+ 8000226:	687b      	ldr	r3, [r7, #4]
+ 8000228:	791b      	ldrb	r3, [r3, #4]
+ 800022a:	005b      	lsls	r3, r3, #1
+ 800022c:	4099      	lsls	r1, r3
+ 800022e:	000b      	movs	r3, r1
+ 8000230:	0019      	movs	r1, r3
+ 8000232:	687b      	ldr	r3, [r7, #4]
+ 8000234:	681b      	ldr	r3, [r3, #0]
+ 8000236:	430a      	orrs	r2, r1
+ 8000238:	60da      	str	r2, [r3, #12]
+	// optype
+	pGPIOHandle->pGPIOx->OTYPER |= (pGPIOHandle->GPIO_PinConfig.pinOType << pGPIOHandle->GPIO_PinConfig.pinNumber);
+ 800023a:	687b      	ldr	r3, [r7, #4]
+ 800023c:	681b      	ldr	r3, [r3, #0]
+ 800023e:	685a      	ldr	r2, [r3, #4]
+ 8000240:	687b      	ldr	r3, [r7, #4]
+ 8000242:	7a1b      	ldrb	r3, [r3, #8]
+ 8000244:	0019      	movs	r1, r3
+ 8000246:	687b      	ldr	r3, [r7, #4]
+ 8000248:	791b      	ldrb	r3, [r3, #4]
+ 800024a:	4099      	lsls	r1, r3
+ 800024c:	000b      	movs	r3, r1
+ 800024e:	0019      	movs	r1, r3
+ 8000250:	687b      	ldr	r3, [r7, #4]
+ 8000252:	681b      	ldr	r3, [r3, #0]
+ 8000254:	430a      	orrs	r2, r1
+ 8000256:	605a      	str	r2, [r3, #4]
+	// alt func
+	//This line should be executed only when mode=alt function selected.
+	if(pGPIOHandle->GPIO_PinConfig.pinMode == NAZEER_GPIO_MODE_ALTFN){
+ 8000258:	687b      	ldr	r3, [r7, #4]
+ 800025a:	795b      	ldrb	r3, [r3, #5]
+ 800025c:	2b10      	cmp	r3, #16
+ 800025e:	d128      	bne.n	80002b2 <NAZEER_GPIO_Init+0xe0>
+		if(pGPIOHandle->GPIO_PinConfig.pinNumber < 8){
+ 8000260:	687b      	ldr	r3, [r7, #4]
+ 8000262:	791b      	ldrb	r3, [r3, #4]
+ 8000264:	2b07      	cmp	r3, #7
+ 8000266:	d810      	bhi.n	800028a <NAZEER_GPIO_Init+0xb8>
+			pGPIOHandle->pGPIOx->AFRL |= (pGPIOHandle->GPIO_PinConfig.pinAltFuncMode << (4*pGPIOHandle->GPIO_PinConfig.pinNumber));
+ 8000268:	687b      	ldr	r3, [r7, #4]
+ 800026a:	681b      	ldr	r3, [r3, #0]
+ 800026c:	6a1a      	ldr	r2, [r3, #32]
+ 800026e:	687b      	ldr	r3, [r7, #4]
+ 8000270:	7a5b      	ldrb	r3, [r3, #9]
+ 8000272:	0019      	movs	r1, r3
+ 8000274:	687b      	ldr	r3, [r7, #4]
+ 8000276:	791b      	ldrb	r3, [r3, #4]
+ 8000278:	009b      	lsls	r3, r3, #2
+ 800027a:	4099      	lsls	r1, r3
+ 800027c:	000b      	movs	r3, r1
+ 800027e:	0019      	movs	r1, r3
+ 8000280:	687b      	ldr	r3, [r7, #4]
+ 8000282:	681b      	ldr	r3, [r3, #0]
+ 8000284:	430a      	orrs	r2, r1
+ 8000286:	621a      	str	r2, [r3, #32]
+		}else if(pGPIOHandle->GPIO_PinConfig.pinNumber >=8){
+			pGPIOHandle->pGPIOx->AFRH |= (pGPIOHandle->GPIO_PinConfig.pinAltFuncMode << (4*pGPIOHandle->GPIO_PinConfig.pinNumber));
+		}
+	}
+}
+ 8000288:	e013      	b.n	80002b2 <NAZEER_GPIO_Init+0xe0>
+		}else if(pGPIOHandle->GPIO_PinConfig.pinNumber >=8){
+ 800028a:	687b      	ldr	r3, [r7, #4]
+ 800028c:	791b      	ldrb	r3, [r3, #4]
+ 800028e:	2b07      	cmp	r3, #7
+ 8000290:	d90f      	bls.n	80002b2 <NAZEER_GPIO_Init+0xe0>
+			pGPIOHandle->pGPIOx->AFRH |= (pGPIOHandle->GPIO_PinConfig.pinAltFuncMode << (4*pGPIOHandle->GPIO_PinConfig.pinNumber));
+ 8000292:	687b      	ldr	r3, [r7, #4]
+ 8000294:	681b      	ldr	r3, [r3, #0]
+ 8000296:	6a5a      	ldr	r2, [r3, #36]	; 0x24
+ 8000298:	687b      	ldr	r3, [r7, #4]
+ 800029a:	7a5b      	ldrb	r3, [r3, #9]
+ 800029c:	0019      	movs	r1, r3
+ 800029e:	687b      	ldr	r3, [r7, #4]
+ 80002a0:	791b      	ldrb	r3, [r3, #4]
+ 80002a2:	009b      	lsls	r3, r3, #2
+ 80002a4:	4099      	lsls	r1, r3
+ 80002a6:	000b      	movs	r3, r1
+ 80002a8:	0019      	movs	r1, r3
+ 80002aa:	687b      	ldr	r3, [r7, #4]
+ 80002ac:	681b      	ldr	r3, [r3, #0]
+ 80002ae:	430a      	orrs	r2, r1
+ 80002b0:	625a      	str	r2, [r3, #36]	; 0x24
+}
+ 80002b2:	46c0      	nop			; (mov r8, r8)
+ 80002b4:	46bd      	mov	sp, r7
+ 80002b6:	b002      	add	sp, #8
+ 80002b8:	bd80      	pop	{r7, pc}
 
-080001b8 <_fini>:
- 80001b8:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
- 80001ba:	46c0      	nop			; (mov r8, r8)
- 80001bc:	bcf8      	pop	{r3, r4, r5, r6, r7}
- 80001be:	bc08      	pop	{r3}
- 80001c0:	469e      	mov	lr, r3
- 80001c2:	4770      	bx	lr
+080002ba <NAZEER_GPIO_TogglePin>:
+	}
+}
+void NAZEER_GPIO_WritePort(NAZEER_GPIO_RegDef_t *pGPIOx, uint16_t val){
+	pGPIOx->ODR = val;
+}
+void NAZEER_GPIO_TogglePin(NAZEER_GPIO_RegDef_t *pGPIOx, uint8_t pinNum){
+ 80002ba:	b580      	push	{r7, lr}
+ 80002bc:	b082      	sub	sp, #8
+ 80002be:	af00      	add	r7, sp, #0
+ 80002c0:	6078      	str	r0, [r7, #4]
+ 80002c2:	000a      	movs	r2, r1
+ 80002c4:	1cfb      	adds	r3, r7, #3
+ 80002c6:	701a      	strb	r2, [r3, #0]
+	pGPIOx->ODR ^= (1 << pinNum);
+ 80002c8:	687b      	ldr	r3, [r7, #4]
+ 80002ca:	695b      	ldr	r3, [r3, #20]
+ 80002cc:	1cfa      	adds	r2, r7, #3
+ 80002ce:	7812      	ldrb	r2, [r2, #0]
+ 80002d0:	2101      	movs	r1, #1
+ 80002d2:	4091      	lsls	r1, r2
+ 80002d4:	000a      	movs	r2, r1
+ 80002d6:	405a      	eors	r2, r3
+ 80002d8:	687b      	ldr	r3, [r7, #4]
+ 80002da:	615a      	str	r2, [r3, #20]
+}
+ 80002dc:	46c0      	nop			; (mov r8, r8)
+ 80002de:	46bd      	mov	sp, r7
+ 80002e0:	b002      	add	sp, #8
+ 80002e2:	bd80      	pop	{r7, pc}
+
+080002e4 <NAZEER_GPIO_PCLKControl>:
+}
+void NAZEER_GPIO_IRQHandler(void){
+
+}
+//clock related
+void NAZEER_GPIO_PCLKControl(NAZEER_GPIO_RegDef_t *pGPIOx, uint8_t ENorDI){
+ 80002e4:	b580      	push	{r7, lr}
+ 80002e6:	b082      	sub	sp, #8
+ 80002e8:	af00      	add	r7, sp, #0
+ 80002ea:	6078      	str	r0, [r7, #4]
+ 80002ec:	000a      	movs	r2, r1
+ 80002ee:	1cfb      	adds	r3, r7, #3
+ 80002f0:	701a      	strb	r2, [r3, #0]
+	if(ENorDI == ENABLE){
+ 80002f2:	1cfb      	adds	r3, r7, #3
+ 80002f4:	781b      	ldrb	r3, [r3, #0]
+ 80002f6:	2b01      	cmp	r3, #1
+ 80002f8:	d148      	bne.n	800038c <NAZEER_GPIO_PCLKControl+0xa8>
+		if(pGPIOx == NAZEER_GPIOA){
+ 80002fa:	687a      	ldr	r2, [r7, #4]
+ 80002fc:	2390      	movs	r3, #144	; 0x90
+ 80002fe:	05db      	lsls	r3, r3, #23
+ 8000300:	429a      	cmp	r2, r3
+ 8000302:	d107      	bne.n	8000314 <NAZEER_GPIO_PCLKControl+0x30>
+			NAZEER_GPIOA_PCLK_EN();
+ 8000304:	4b46      	ldr	r3, [pc, #280]	; (8000420 <NAZEER_GPIO_PCLKControl+0x13c>)
+ 8000306:	695a      	ldr	r2, [r3, #20]
+ 8000308:	4b45      	ldr	r3, [pc, #276]	; (8000420 <NAZEER_GPIO_PCLKControl+0x13c>)
+ 800030a:	2180      	movs	r1, #128	; 0x80
+ 800030c:	0289      	lsls	r1, r1, #10
+ 800030e:	430a      	orrs	r2, r1
+ 8000310:	615a      	str	r2, [r3, #20]
+			NAZEER_GPIOF_PCLK_DI();
+		}
+	}else{
+		//not a valid control input
+	}
+}
+ 8000312:	e081      	b.n	8000418 <NAZEER_GPIO_PCLKControl+0x134>
+		}else if(pGPIOx == NAZEER_GPIOB){
+ 8000314:	687b      	ldr	r3, [r7, #4]
+ 8000316:	4a43      	ldr	r2, [pc, #268]	; (8000424 <NAZEER_GPIO_PCLKControl+0x140>)
+ 8000318:	4293      	cmp	r3, r2
+ 800031a:	d107      	bne.n	800032c <NAZEER_GPIO_PCLKControl+0x48>
+			NAZEER_GPIOB_PCLK_EN();
+ 800031c:	4b40      	ldr	r3, [pc, #256]	; (8000420 <NAZEER_GPIO_PCLKControl+0x13c>)
+ 800031e:	695a      	ldr	r2, [r3, #20]
+ 8000320:	4b3f      	ldr	r3, [pc, #252]	; (8000420 <NAZEER_GPIO_PCLKControl+0x13c>)
+ 8000322:	2180      	movs	r1, #128	; 0x80
+ 8000324:	02c9      	lsls	r1, r1, #11
+ 8000326:	430a      	orrs	r2, r1
+ 8000328:	615a      	str	r2, [r3, #20]
+}
+ 800032a:	e075      	b.n	8000418 <NAZEER_GPIO_PCLKControl+0x134>
+		}else if(pGPIOx == NAZEER_GPIOC){
+ 800032c:	687b      	ldr	r3, [r7, #4]
+ 800032e:	4a3e      	ldr	r2, [pc, #248]	; (8000428 <NAZEER_GPIO_PCLKControl+0x144>)
+ 8000330:	4293      	cmp	r3, r2
+ 8000332:	d107      	bne.n	8000344 <NAZEER_GPIO_PCLKControl+0x60>
+			NAZEER_GPIOC_PCLK_EN();
+ 8000334:	4b3a      	ldr	r3, [pc, #232]	; (8000420 <NAZEER_GPIO_PCLKControl+0x13c>)
+ 8000336:	695a      	ldr	r2, [r3, #20]
+ 8000338:	4b39      	ldr	r3, [pc, #228]	; (8000420 <NAZEER_GPIO_PCLKControl+0x13c>)
+ 800033a:	2180      	movs	r1, #128	; 0x80
+ 800033c:	0309      	lsls	r1, r1, #12
+ 800033e:	430a      	orrs	r2, r1
+ 8000340:	615a      	str	r2, [r3, #20]
+}
+ 8000342:	e069      	b.n	8000418 <NAZEER_GPIO_PCLKControl+0x134>
+		}else if(pGPIOx == NAZEER_GPIOD){
+ 8000344:	687b      	ldr	r3, [r7, #4]
+ 8000346:	4a39      	ldr	r2, [pc, #228]	; (800042c <NAZEER_GPIO_PCLKControl+0x148>)
+ 8000348:	4293      	cmp	r3, r2
+ 800034a:	d107      	bne.n	800035c <NAZEER_GPIO_PCLKControl+0x78>
+			NAZEER_GPIOD_PCLK_EN();
+ 800034c:	4b34      	ldr	r3, [pc, #208]	; (8000420 <NAZEER_GPIO_PCLKControl+0x13c>)
+ 800034e:	695a      	ldr	r2, [r3, #20]
+ 8000350:	4b33      	ldr	r3, [pc, #204]	; (8000420 <NAZEER_GPIO_PCLKControl+0x13c>)
+ 8000352:	2180      	movs	r1, #128	; 0x80
+ 8000354:	0349      	lsls	r1, r1, #13
+ 8000356:	430a      	orrs	r2, r1
+ 8000358:	615a      	str	r2, [r3, #20]
+}
+ 800035a:	e05d      	b.n	8000418 <NAZEER_GPIO_PCLKControl+0x134>
+		}else if(pGPIOx == NAZEER_GPIOE){
+ 800035c:	687b      	ldr	r3, [r7, #4]
+ 800035e:	4a34      	ldr	r2, [pc, #208]	; (8000430 <NAZEER_GPIO_PCLKControl+0x14c>)
+ 8000360:	4293      	cmp	r3, r2
+ 8000362:	d107      	bne.n	8000374 <NAZEER_GPIO_PCLKControl+0x90>
+			NAZEER_GPIOE_PCLK_EN();
+ 8000364:	4b2e      	ldr	r3, [pc, #184]	; (8000420 <NAZEER_GPIO_PCLKControl+0x13c>)
+ 8000366:	695a      	ldr	r2, [r3, #20]
+ 8000368:	4b2d      	ldr	r3, [pc, #180]	; (8000420 <NAZEER_GPIO_PCLKControl+0x13c>)
+ 800036a:	2180      	movs	r1, #128	; 0x80
+ 800036c:	0389      	lsls	r1, r1, #14
+ 800036e:	430a      	orrs	r2, r1
+ 8000370:	615a      	str	r2, [r3, #20]
+}
+ 8000372:	e051      	b.n	8000418 <NAZEER_GPIO_PCLKControl+0x134>
+		}else if(pGPIOx == NAZEER_GPIOF){
+ 8000374:	687b      	ldr	r3, [r7, #4]
+ 8000376:	4a2f      	ldr	r2, [pc, #188]	; (8000434 <NAZEER_GPIO_PCLKControl+0x150>)
+ 8000378:	4293      	cmp	r3, r2
+ 800037a:	d14d      	bne.n	8000418 <NAZEER_GPIO_PCLKControl+0x134>
+			NAZEER_GPIOF_PCLK_EN();
+ 800037c:	4b28      	ldr	r3, [pc, #160]	; (8000420 <NAZEER_GPIO_PCLKControl+0x13c>)
+ 800037e:	695a      	ldr	r2, [r3, #20]
+ 8000380:	4b27      	ldr	r3, [pc, #156]	; (8000420 <NAZEER_GPIO_PCLKControl+0x13c>)
+ 8000382:	2180      	movs	r1, #128	; 0x80
+ 8000384:	03c9      	lsls	r1, r1, #15
+ 8000386:	430a      	orrs	r2, r1
+ 8000388:	615a      	str	r2, [r3, #20]
+}
+ 800038a:	e045      	b.n	8000418 <NAZEER_GPIO_PCLKControl+0x134>
+	}else if(ENorDI == DISABLE){
+ 800038c:	1cfb      	adds	r3, r7, #3
+ 800038e:	781b      	ldrb	r3, [r3, #0]
+ 8000390:	2b00      	cmp	r3, #0
+ 8000392:	d141      	bne.n	8000418 <NAZEER_GPIO_PCLKControl+0x134>
+		if(pGPIOx == NAZEER_GPIOA){
+ 8000394:	687a      	ldr	r2, [r7, #4]
+ 8000396:	2390      	movs	r3, #144	; 0x90
+ 8000398:	05db      	lsls	r3, r3, #23
+ 800039a:	429a      	cmp	r2, r3
+ 800039c:	d106      	bne.n	80003ac <NAZEER_GPIO_PCLKControl+0xc8>
+			NAZEER_GPIOA_PCLK_DI();
+ 800039e:	4b20      	ldr	r3, [pc, #128]	; (8000420 <NAZEER_GPIO_PCLKControl+0x13c>)
+ 80003a0:	695a      	ldr	r2, [r3, #20]
+ 80003a2:	4b1f      	ldr	r3, [pc, #124]	; (8000420 <NAZEER_GPIO_PCLKControl+0x13c>)
+ 80003a4:	4924      	ldr	r1, [pc, #144]	; (8000438 <NAZEER_GPIO_PCLKControl+0x154>)
+ 80003a6:	400a      	ands	r2, r1
+ 80003a8:	615a      	str	r2, [r3, #20]
+}
+ 80003aa:	e035      	b.n	8000418 <NAZEER_GPIO_PCLKControl+0x134>
+		}else if(pGPIOx == NAZEER_GPIOB){
+ 80003ac:	687b      	ldr	r3, [r7, #4]
+ 80003ae:	4a1d      	ldr	r2, [pc, #116]	; (8000424 <NAZEER_GPIO_PCLKControl+0x140>)
+ 80003b0:	4293      	cmp	r3, r2
+ 80003b2:	d106      	bne.n	80003c2 <NAZEER_GPIO_PCLKControl+0xde>
+			NAZEER_GPIOB_PCLK_DI();
+ 80003b4:	4b1a      	ldr	r3, [pc, #104]	; (8000420 <NAZEER_GPIO_PCLKControl+0x13c>)
+ 80003b6:	695a      	ldr	r2, [r3, #20]
+ 80003b8:	4b19      	ldr	r3, [pc, #100]	; (8000420 <NAZEER_GPIO_PCLKControl+0x13c>)
+ 80003ba:	4920      	ldr	r1, [pc, #128]	; (800043c <NAZEER_GPIO_PCLKControl+0x158>)
+ 80003bc:	400a      	ands	r2, r1
+ 80003be:	615a      	str	r2, [r3, #20]
+}
+ 80003c0:	e02a      	b.n	8000418 <NAZEER_GPIO_PCLKControl+0x134>
+		}else if(pGPIOx == NAZEER_GPIOC){
+ 80003c2:	687b      	ldr	r3, [r7, #4]
+ 80003c4:	4a18      	ldr	r2, [pc, #96]	; (8000428 <NAZEER_GPIO_PCLKControl+0x144>)
+ 80003c6:	4293      	cmp	r3, r2
+ 80003c8:	d106      	bne.n	80003d8 <NAZEER_GPIO_PCLKControl+0xf4>
+			NAZEER_GPIOC_PCLK_DI();
+ 80003ca:	4b15      	ldr	r3, [pc, #84]	; (8000420 <NAZEER_GPIO_PCLKControl+0x13c>)
+ 80003cc:	695a      	ldr	r2, [r3, #20]
+ 80003ce:	4b14      	ldr	r3, [pc, #80]	; (8000420 <NAZEER_GPIO_PCLKControl+0x13c>)
+ 80003d0:	491b      	ldr	r1, [pc, #108]	; (8000440 <NAZEER_GPIO_PCLKControl+0x15c>)
+ 80003d2:	400a      	ands	r2, r1
+ 80003d4:	615a      	str	r2, [r3, #20]
+}
+ 80003d6:	e01f      	b.n	8000418 <NAZEER_GPIO_PCLKControl+0x134>
+		}else if(pGPIOx == NAZEER_GPIOD){
+ 80003d8:	687b      	ldr	r3, [r7, #4]
+ 80003da:	4a14      	ldr	r2, [pc, #80]	; (800042c <NAZEER_GPIO_PCLKControl+0x148>)
+ 80003dc:	4293      	cmp	r3, r2
+ 80003de:	d106      	bne.n	80003ee <NAZEER_GPIO_PCLKControl+0x10a>
+			NAZEER_GPIOD_PCLK_DI();
+ 80003e0:	4b0f      	ldr	r3, [pc, #60]	; (8000420 <NAZEER_GPIO_PCLKControl+0x13c>)
+ 80003e2:	695a      	ldr	r2, [r3, #20]
+ 80003e4:	4b0e      	ldr	r3, [pc, #56]	; (8000420 <NAZEER_GPIO_PCLKControl+0x13c>)
+ 80003e6:	4917      	ldr	r1, [pc, #92]	; (8000444 <NAZEER_GPIO_PCLKControl+0x160>)
+ 80003e8:	400a      	ands	r2, r1
+ 80003ea:	615a      	str	r2, [r3, #20]
+}
+ 80003ec:	e014      	b.n	8000418 <NAZEER_GPIO_PCLKControl+0x134>
+		}else if(pGPIOx == NAZEER_GPIOE){
+ 80003ee:	687b      	ldr	r3, [r7, #4]
+ 80003f0:	4a0f      	ldr	r2, [pc, #60]	; (8000430 <NAZEER_GPIO_PCLKControl+0x14c>)
+ 80003f2:	4293      	cmp	r3, r2
+ 80003f4:	d106      	bne.n	8000404 <NAZEER_GPIO_PCLKControl+0x120>
+			NAZEER_GPIOE_PCLK_DI();
+ 80003f6:	4b0a      	ldr	r3, [pc, #40]	; (8000420 <NAZEER_GPIO_PCLKControl+0x13c>)
+ 80003f8:	695a      	ldr	r2, [r3, #20]
+ 80003fa:	4b09      	ldr	r3, [pc, #36]	; (8000420 <NAZEER_GPIO_PCLKControl+0x13c>)
+ 80003fc:	4912      	ldr	r1, [pc, #72]	; (8000448 <NAZEER_GPIO_PCLKControl+0x164>)
+ 80003fe:	400a      	ands	r2, r1
+ 8000400:	615a      	str	r2, [r3, #20]
+}
+ 8000402:	e009      	b.n	8000418 <NAZEER_GPIO_PCLKControl+0x134>
+		}else if(pGPIOx == NAZEER_GPIOF){
+ 8000404:	687b      	ldr	r3, [r7, #4]
+ 8000406:	4a0b      	ldr	r2, [pc, #44]	; (8000434 <NAZEER_GPIO_PCLKControl+0x150>)
+ 8000408:	4293      	cmp	r3, r2
+ 800040a:	d105      	bne.n	8000418 <NAZEER_GPIO_PCLKControl+0x134>
+			NAZEER_GPIOF_PCLK_DI();
+ 800040c:	4b04      	ldr	r3, [pc, #16]	; (8000420 <NAZEER_GPIO_PCLKControl+0x13c>)
+ 800040e:	695a      	ldr	r2, [r3, #20]
+ 8000410:	4b03      	ldr	r3, [pc, #12]	; (8000420 <NAZEER_GPIO_PCLKControl+0x13c>)
+ 8000412:	490e      	ldr	r1, [pc, #56]	; (800044c <NAZEER_GPIO_PCLKControl+0x168>)
+ 8000414:	400a      	ands	r2, r1
+ 8000416:	615a      	str	r2, [r3, #20]
+}
+ 8000418:	46c0      	nop			; (mov r8, r8)
+ 800041a:	46bd      	mov	sp, r7
+ 800041c:	b002      	add	sp, #8
+ 800041e:	bd80      	pop	{r7, pc}
+ 8000420:	40021000 	.word	0x40021000
+ 8000424:	48000400 	.word	0x48000400
+ 8000428:	48000800 	.word	0x48000800
+ 800042c:	48000c00 	.word	0x48000c00
+ 8000430:	48001000 	.word	0x48001000
+ 8000434:	48001400 	.word	0x48001400
+ 8000438:	fffdffff 	.word	0xfffdffff
+ 800043c:	fffbffff 	.word	0xfffbffff
+ 8000440:	fff7ffff 	.word	0xfff7ffff
+ 8000444:	ffefffff 	.word	0xffefffff
+ 8000448:	ffdfffff 	.word	0xffdfffff
+ 800044c:	ffbfffff 	.word	0xffbfffff
+
+08000450 <__libc_init_array>:
+ 8000450:	b570      	push	{r4, r5, r6, lr}
+ 8000452:	2600      	movs	r6, #0
+ 8000454:	4c0c      	ldr	r4, [pc, #48]	; (8000488 <__libc_init_array+0x38>)
+ 8000456:	4d0d      	ldr	r5, [pc, #52]	; (800048c <__libc_init_array+0x3c>)
+ 8000458:	1b64      	subs	r4, r4, r5
+ 800045a:	10a4      	asrs	r4, r4, #2
+ 800045c:	42a6      	cmp	r6, r4
+ 800045e:	d109      	bne.n	8000474 <__libc_init_array+0x24>
+ 8000460:	2600      	movs	r6, #0
+ 8000462:	f000 f819 	bl	8000498 <_init>
+ 8000466:	4c0a      	ldr	r4, [pc, #40]	; (8000490 <__libc_init_array+0x40>)
+ 8000468:	4d0a      	ldr	r5, [pc, #40]	; (8000494 <__libc_init_array+0x44>)
+ 800046a:	1b64      	subs	r4, r4, r5
+ 800046c:	10a4      	asrs	r4, r4, #2
+ 800046e:	42a6      	cmp	r6, r4
+ 8000470:	d105      	bne.n	800047e <__libc_init_array+0x2e>
+ 8000472:	bd70      	pop	{r4, r5, r6, pc}
+ 8000474:	00b3      	lsls	r3, r6, #2
+ 8000476:	58eb      	ldr	r3, [r5, r3]
+ 8000478:	4798      	blx	r3
+ 800047a:	3601      	adds	r6, #1
+ 800047c:	e7ee      	b.n	800045c <__libc_init_array+0xc>
+ 800047e:	00b3      	lsls	r3, r6, #2
+ 8000480:	58eb      	ldr	r3, [r5, r3]
+ 8000482:	4798      	blx	r3
+ 8000484:	3601      	adds	r6, #1
+ 8000486:	e7f2      	b.n	800046e <__libc_init_array+0x1e>
+ 8000488:	080004b0 	.word	0x080004b0
+ 800048c:	080004b0 	.word	0x080004b0
+ 8000490:	080004b4 	.word	0x080004b4
+ 8000494:	080004b0 	.word	0x080004b0
+
+08000498 <_init>:
+ 8000498:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+ 800049a:	46c0      	nop			; (mov r8, r8)
+ 800049c:	bcf8      	pop	{r3, r4, r5, r6, r7}
+ 800049e:	bc08      	pop	{r3}
+ 80004a0:	469e      	mov	lr, r3
+ 80004a2:	4770      	bx	lr
+
+080004a4 <_fini>:
+ 80004a4:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+ 80004a6:	46c0      	nop			; (mov r8, r8)
+ 80004a8:	bcf8      	pop	{r3, r4, r5, r6, r7}
+ 80004aa:	bc08      	pop	{r3}
+ 80004ac:	469e      	mov	lr, r3
+ 80004ae:	4770      	bx	lr

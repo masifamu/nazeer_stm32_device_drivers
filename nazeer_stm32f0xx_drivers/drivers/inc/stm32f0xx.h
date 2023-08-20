@@ -107,20 +107,25 @@ typedef struct{
 //peripheral clock enable and disable macros
 #define NAZEER_GPIOA_PCLK_EN()			(NAZEER_RCC->AHBENR |= (1 << 17))
 #define NAZEER_GPIOA_PCLK_DI()			(NAZEER_RCC->AHBENR &= ~(1 << 17))
-
 #define NAZEER_GPIOB_PCLK_EN()			(NAZEER_RCC->AHBENR |= (1 << 18))
 #define NAZEER_GPIOB_PCLK_DI()			(NAZEER_RCC->AHBENR &= ~(1 << 18))
-
 #define NAZEER_GPIOC_PCLK_EN()			(NAZEER_RCC->AHBENR |= (1 << 19))
 #define NAZEER_GPIOC_PCLK_DI()			(NAZEER_RCC->AHBENR &= ~(1 << 19))
-
 #define NAZEER_GPIOD_PCLK_EN()			(NAZEER_RCC->AHBENR |= (1 << 20))
 #define NAZEER_GPIOD_PCLK_DI()			(NAZEER_RCC->AHBENR &= ~(1 << 20))
-
 #define NAZEER_GPIOE_PCLK_EN()			(NAZEER_RCC->AHBENR |= (1 << 21))
 #define NAZEER_GPIOE_PCLK_DI()			(NAZEER_RCC->AHBENR &= ~(1 << 21))
-
 #define NAZEER_GPIOF_PCLK_EN()			(NAZEER_RCC->AHBENR |= (1 << 22))
 #define NAZEER_GPIOF_PCLK_DI()			(NAZEER_RCC->AHBENR &= ~(1 << 22))
+
+//peripheral reset macros, use do while to include multiple lines in one macros.
+//remember the bit in RCC AHBRSTR should be changed from low to high and then high to low
+//else your peripheral will always be in reset mode.
+#define NAZEER_GPIOA_RST()				do{ (NAZEER_RCC->AHBRSTR |= (1 << 17)); (NAZEER_RCC->AHBRSTR &= ~(1 << 17)); }while(0)
+#define NAZEER_GPIOB_RST()				do{ (NAZEER_RCC->AHBRSTR |= (1 << 18)); (NAZEER_RCC->AHBRSTR &= ~(1 << 18)); }while(0)
+#define NAZEER_GPIOC_RST()				do{ (NAZEER_RCC->AHBRSTR |= (1 << 19)); (NAZEER_RCC->AHBRSTR &= ~(1 << 19)); }while(0)
+#define NAZEER_GPIOD_RST()				do{ (NAZEER_RCC->AHBRSTR |= (1 << 20)); (NAZEER_RCC->AHBRSTR &= ~(1 << 20)); }while(0)
+#define NAZEER_GPIOE_RST()				do{ (NAZEER_RCC->AHBRSTR |= (1 << 21)); (NAZEER_RCC->AHBRSTR &= ~(1 << 21)); }while(0)
+#define NAZEER_GPIOF_RST()				do{ (NAZEER_RCC->AHBRSTR |= (1 << 22)); (NAZEER_RCC->AHBRSTR &= ~(1 << 22)); }while(0)
 
 #endif /* INC_STM32F0XX_H_ */
