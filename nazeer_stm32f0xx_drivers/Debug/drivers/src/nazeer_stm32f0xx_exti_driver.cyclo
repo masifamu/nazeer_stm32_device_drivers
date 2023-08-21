@@ -1,0 +1,2 @@
+../drivers/src/nazeer_stm32f0xx_exti_driver.c:10:6:NAZEER_GPIO_IRQConfig	1
+../drivers/src/nazeer_stm32f0xx_exti_driver.c:13:6:NAZEER_GPIO_IRQHandler	1

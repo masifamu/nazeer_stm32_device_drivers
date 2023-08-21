@@ -61,13 +61,6 @@ void NAZEER_GPIO_WritePort(NAZEER_GPIO_RegDef_t *pGPIOx, uint16_t val){
 void NAZEER_GPIO_TogglePin(NAZEER_GPIO_RegDef_t *pGPIOx, uint8_t pinNum){
 	pGPIOx->ODR ^= (1 << pinNum);
 }
-//IRQ related
-void NAZEER_GPIO_IRQConfig(uint8_t IRQNum,uint8_t IRQPrio, uint8_t ENorDI){
-
-}
-void NAZEER_GPIO_IRQHandler(void){
-
-}
 //clock related
 void NAZEER_GPIO_PCLKControl(NAZEER_GPIO_RegDef_t *pGPIOx, uint8_t ENorDI){
 	if(ENorDI == ENABLE){

@@ -5,6 +5,4 @@
 ../drivers/src/nazeer_stm32f0xx_gpio_driver.c:51:6:NAZEER_GPIO_WritePin	3
 ../drivers/src/nazeer_stm32f0xx_gpio_driver.c:58:6:NAZEER_GPIO_WritePort	1
 ../drivers/src/nazeer_stm32f0xx_gpio_driver.c:61:6:NAZEER_GPIO_TogglePin	1
-../drivers/src/nazeer_stm32f0xx_gpio_driver.c:65:6:NAZEER_GPIO_IRQConfig	1
-../drivers/src/nazeer_stm32f0xx_gpio_driver.c:68:6:NAZEER_GPIO_IRQHandler	1
-../drivers/src/nazeer_stm32f0xx_gpio_driver.c:72:6:NAZEER_GPIO_PCLKControl	15
+../drivers/src/nazeer_stm32f0xx_gpio_driver.c:65:6:NAZEER_GPIO_PCLKControl	15

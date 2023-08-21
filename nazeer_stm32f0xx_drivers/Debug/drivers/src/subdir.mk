@@ -5,12 +5,15 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../drivers/src/nazeer_stm32f0xx_exti_driver.c \
 ../drivers/src/nazeer_stm32f0xx_gpio_driver.c 
 
 OBJS += \
+./drivers/src/nazeer_stm32f0xx_exti_driver.o \
 ./drivers/src/nazeer_stm32f0xx_gpio_driver.o 
 
 C_DEPS += \
+./drivers/src/nazeer_stm32f0xx_exti_driver.d \
 ./drivers/src/nazeer_stm32f0xx_gpio_driver.d 
 
 
@@ -21,7 +24,7 @@ drivers/src/%.o drivers/src/%.su drivers/src/%.cyclo: ../drivers/src/%.c drivers
 clean: clean-drivers-2f-src
 
 clean-drivers-2f-src:
-	-$(RM) ./drivers/src/nazeer_stm32f0xx_gpio_driver.cyclo ./drivers/src/nazeer_stm32f0xx_gpio_driver.d ./drivers/src/nazeer_stm32f0xx_gpio_driver.o ./drivers/src/nazeer_stm32f0xx_gpio_driver.su
+	-$(RM) ./drivers/src/nazeer_stm32f0xx_exti_driver.cyclo ./drivers/src/nazeer_stm32f0xx_exti_driver.d ./drivers/src/nazeer_stm32f0xx_exti_driver.o ./drivers/src/nazeer_stm32f0xx_exti_driver.su ./drivers/src/nazeer_stm32f0xx_gpio_driver.cyclo ./drivers/src/nazeer_stm32f0xx_gpio_driver.d ./drivers/src/nazeer_stm32f0xx_gpio_driver.o ./drivers/src/nazeer_stm32f0xx_gpio_driver.su
 
 .PHONY: clean-drivers-2f-src
 

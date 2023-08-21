@@ -2,4 +2,5 @@
 "./Src/syscalls.o"
 "./Src/sysmem.o"
 "./Startup/startup_stm32f051r8tx.o"
+"./drivers/src/nazeer_stm32f0xx_exti_driver.o"
 "./drivers/src/nazeer_stm32f0xx_gpio_driver.o"
