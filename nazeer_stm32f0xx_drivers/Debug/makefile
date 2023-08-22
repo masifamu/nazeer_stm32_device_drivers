@@ -61,7 +61,7 @@ main-build: nazeer_stm32f0xx_drivers.elf secondary-outputs
 
 # Tool invocations
 nazeer_stm32f0xx_drivers.elf nazeer_stm32f0xx_drivers.map: $(OBJS) $(USER_OBJS) /home/syntiant_0005/STM32CubeIDE/workspace_1.13.1/nazeer_stm32f0xx_drivers/STM32F051R8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "nazeer_stm32f0xx_drivers.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0 -T"/home/syntiant_0005/STM32CubeIDE/workspace_1.13.1/nazeer_stm32f0xx_drivers/STM32F051R8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="nazeer_stm32f0xx_drivers.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+	arm-none-eabi-gcc -o "nazeer_stm32f0xx_drivers.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0 -T"/home/syntiant_0005/STM32CubeIDE/workspace_1.13.1/nazeer_stm32f0xx_drivers/STM32F051R8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="nazeer_stm32f0xx_drivers.map" -Wl,--gc-sections -static -specs=rdimon.specs -lc -lrdimon --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
